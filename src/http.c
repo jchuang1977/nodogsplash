@@ -709,10 +709,26 @@ http_nodogsplash_make_authtarget(char* token, char* redir)
 	authtarget->redir = safe_strdup(redir);
 	encodedredir = httpdUrlEncode(authtarget->redir);  /* malloc's */
 	encodedtok = httpdUrlEncode(authtarget->token);  /* malloc's */
+#ifdef __WISE_CAMERA__
+	if(config->fb_machine == 1 && config->FBServerIP )
+	{
+		safe_asprintf(&(authtarget->authaction),"http://%s/",config->FBServerIP);
+		if(strlen(config->UID))
+			safe_asprintf(&(authtarget->authtarget), "%s?UID=%s&tok=%s", authtarget->authaction,config->UID,encodedtok);
+		else
+			safe_asprintf(&(authtarget->authtarget), "%s?tok=%s", authtarget->authaction,encodedtok);
+	}
+	else
+		safe_asprintf(&(authtarget->authtarget), "%s?redir=%s&tok=%s",
+					  authtarget->authaction,
+					  encodedredir,
+					  encodedtok);		
+#else
 	safe_asprintf(&(authtarget->authtarget), "%s?redir=%s&tok=%s",
 				  authtarget->authaction,
 				  encodedredir,
 				  encodedtok);
+#endif				  
 	free(encodedredir);
 	free(encodedtok);
 

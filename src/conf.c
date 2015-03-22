@@ -89,6 +89,12 @@ typedef enum {
 	oImagesDir,
 	oPagesDir,
 	oRedirectURL,
+#ifdef __WISE_CAMERA__
+	oUID,
+	oFBServerURL,
+	oFBServerIP,
+	ofb_machine,
+#endif	
 	oClientIdleTimeout,
 	oClientForceTimeout,
 	oCheckInterval,
@@ -111,7 +117,7 @@ typedef enum {
 	oAllowedMACList,
 	oFWMarkAuthenticated,
 	oFWMarkTrusted,
-	oFWMarkBlocked
+	oFWMarkBlocked	
 } OpCodes;
 
 /** @internal
@@ -144,6 +150,12 @@ static const struct {
 	{ "imagesdir", oImagesDir },
 	{ "pagesdir", oPagesDir },
 	{ "redirectURL", oRedirectURL },
+#ifdef __WISE_CAMERA__
+	{ "UID", oUID },
+	{ "fb_machine", ofb_machine},
+	{ "FBServerURL", oFBServerURL},
+	{ "FBServerIP", oFBServerIP},
+#endif	
 	{ "clientidletimeout", oClientIdleTimeout },
 	{ "clientforcetimeout", oClientForceTimeout },
 	{ "checkinterval", oCheckInterval },
@@ -218,6 +230,12 @@ config_init(void)
 	config.authdir = DEFAULT_AUTHDIR;
 	config.denydir = DEFAULT_DENYDIR;
 	config.redirectURL = NULL;
+#ifdef __WISE_CAMERA__
+	config.UID = NULL;
+	config.FBServerURL = NULL;
+	config.FBServerIP = NULL;
+	config.fb_machine = DEFAULT_FB_MACHINE;
+#endif	
 	config.clienttimeout = DEFAULT_CLIENTTIMEOUT;
 	config.clientforceout = DEFAULT_CLIENTFORCEOUT;
 	config.checkinterval = DEFAULT_CHECKINTERVAL;
@@ -800,6 +818,26 @@ config_read(const char *filename)
 		case oRedirectURL:
 			config.redirectURL = safe_strdup(p1);
 			break;
+#ifdef __WISE_CAMERA__	
+		case oUID:
+			config.UID = safe_strdup(p1);
+			break;
+		case oFBServerURL:
+			config.FBServerURL = safe_strdup(p1);
+			break;
+		case oFBServerIP:
+			config.FBServerIP = safe_strdup(p1);
+			break;						
+		case ofb_machine:
+			if ((value = parse_boolean_value(p1)) != -1) {
+				config.fb_machine = value;
+			} else {
+				debug(LOG_ERR, "Bad arg %s to option %s on line %d in %s", p1, s, linenum, filename);
+				debug(LOG_ERR, "Exiting...");
+				exit(-1);
+			}			
+			break;
+#endif			
 		case oNdsctlSocket:
 			free(config.ndsctl_sock);
 			config.ndsctl_sock = safe_strdup(p1);

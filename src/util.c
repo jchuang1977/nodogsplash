@@ -451,7 +451,23 @@ char * get_status_text()
 				 config->redirectURL);
 		len = strlen(buffer);
 	}
-
+#ifdef __WISE_CAMERA__
+	if(config->UID) {
+		snprintf((buffer + len), (sizeof(buffer) - len), "UID: %s\n",
+				 config->UID);
+		len = strlen(buffer);
+	}
+	if(config->FBServerIP) {
+		snprintf((buffer + len), (sizeof(buffer) - len), "FBServerIP: %s\n",
+				 config->FBServerIP);
+		len = strlen(buffer);
+	}
+	if(config->FBServerURL) {
+		snprintf((buffer + len), (sizeof(buffer) - len), "FBServerURL: %s\n",
+				 config->FBServerURL);
+		len = strlen(buffer);
+	}		
+#endif
 	if(config->passwordauth) {
 		snprintf((buffer + len), (sizeof(buffer) - len), "Gateway password: %s\n",
 				 config->password);

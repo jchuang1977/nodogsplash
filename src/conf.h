@@ -29,6 +29,7 @@
 #define _CONF_H_
 
 #define VERSION "0.9_beta9.9.8"
+#define __WISE_CAMERA__
 
 /*@{*/
 /** Defines */
@@ -69,6 +70,9 @@
 #define DEFAULT_USERNAME_AUTH 0
 #define DEFAULT_PASSWORD_ATTEMPTS 5
 #define DEFAULT_AUTHENTICATE_IMMEDIATELY 0
+#ifdef __WISE_CAMERA__
+#define DEFAULT_FB_MACHINE 0
+#endif
 #define DEFAULT_SET_MSS 1
 #define DEFAULT_MSS_VALUE 0
 #define DEFAULT_TRAFFIC_CONTROL 0
@@ -160,6 +164,12 @@ typedef struct {
 	char *imagesdir;		/**< @brief Subdir of webroot containing .png .gif files etc */
 	char *pagesdir;		/**< @brief Subdir of webroot containing other .html files */
 	char *redirectURL;		/**< @brief URL to direct client to after authentication */
+#ifdef __WISE_CAMERA__
+	char *UID;
+	int fb_machine;
+	char *FBServerIP;
+	char *FBServerURL;
+#endif
 	char *authdir;		/**< @brief Notional relative dir for authentication URL */
 	char *denydir;		/**< @brief Notional relative dir for denial URL */
 	int passwordauth;		/**< @brief boolean, whether to use password authentication */

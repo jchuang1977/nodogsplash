@@ -30,4 +30,6 @@
 /** @brief Read buffer for socket read? */
 #define MAX_BUF 4096
 
+#define __WISE_CAMERA__
+
 #endif /* _COMMON_H_ */
