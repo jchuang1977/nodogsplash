@@ -721,7 +721,7 @@ http_nodogsplash_make_authtarget(char* token, char* redir)
 			printf("can not get public ip\n");
 	else
 	{
-		public_ip = fgets(fpin) ;
+		fgets(public_ip, sizeof(public_ip), fpin)  ; 
 		pclose(fpin);
 	}
 		
