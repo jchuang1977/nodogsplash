@@ -712,9 +712,22 @@ http_nodogsplash_make_authtarget(char* token, char* redir)
 #ifdef __WISE_CAMERA__
 	if(config->fb_machine == 1 && config->FBServerIP )
 	{
-		safe_asprintf(&(authtarget->authaction),"http://%s/",config->FBServerIP);
-		if(strlen(config->UID))
-			safe_asprintf(&(authtarget->authtarget), "%s?UID=%s&tok=%s", authtarget->authaction,config->UID,encodedtok);
+		
+	FILE *fpin;
+	char *ptr = NULL;
+	char public_ip[16];
+	
+	if( (fpin = popen("wget -qO- http://ipecho.net/plain ; echo","r")) == NULL)
+			printf("can not get public ip\n");
+	else
+	{
+		public_ip = fgets(fpin) ;
+		pclose(fpin);
+	}
+		
+		//safe_asprintf(&(authtarget->authaction),"http://%s/",config->FBServerIP);
+		if(strlen(config->UID)  && strlen(public_ip) )
+			safe_asprintf(&(authtarget->authtarget), "http://%s/?UID=%s&tok=%s&ip=%s", config->FBServerIP,config->UID,encodedtok,public_ip);
 		else
 			safe_asprintf(&(authtarget->authtarget), "%s?tok=%s", authtarget->authaction,encodedtok);
 	}
