@@ -727,7 +727,8 @@ http_nodogsplash_make_authtarget(char* token, char* redir)
 		
 		//safe_asprintf(&(authtarget->authaction),"http://%s/",config->FBServerIP);
 		if(strlen(config->UID)  && strlen(public_ip) )
-			safe_asprintf(&(authtarget->authtarget), "http://%s/?UID=%s&tok=%s&ip=%s", config->FBServerIP,config->UID,encodedtok,public_ip);
+			safe_asprintf(&(authtarget->authtarget), "http://%s/getservice.asp?DeviceID=%s&UserIdentification=%s&ReturnUrl=http://%s:8888", config->FBServerIP,config->UID,encodedtok,public_ip);
+			//getservice.asp?DeviceID=00:0a:eb:82:bb:e6&UserIdentification=ecd2dc85&ReturnUrl=http://x.x.x.x:8888/&Info=F
 		else
 			safe_asprintf(&(authtarget->authtarget), "%s?tok=%s", authtarget->authaction,encodedtok);
 	}
